@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Criador de Currículo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Merriweather:wght@400;700&family=Space+Grotesk:wght@500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app" id="app">
+<header class="topbar">
+ <div class="logo"><span class="logo-mark">CV</span><div><b>Criador de Currículo</b><small>Monte, personalize e baixe</small></div></div>
+ <div class="progress"><div class="prog-bar"><i id="progFill"></i></div><span id="progTxt">0% completo</span></div>
+ <div class="actions">
+  <button class="btn" id="btnView">👁 Visualizar</button>
+  <button class="btn" id="btnText" title="Importar texto">📥<span class="btn-txt"> Importar texto</span></button>
+  <button class="btn" id="btnTheme" title="Claro / escuro">🌓</button>
+  <button class="btn" id="btnSave">💾<span class="btn-txt"> Salvar</span></button>
+  <details class="menu"><summary class="btn">⋯<span class="btn-txt"> Mais</span></summary><div class="menu-pop">
+   <button class="btn" id="btnExport">⬇️ Exportar backup</button><button class="btn" id="btnImport">⬆️ Importar backup</button><input type="file" id="importInput" accept="application/json" style="display:none"><button class="btn btn-danger" id="btnClear">🗑️ Limpar tudo</button></div></details>
+  <button class="btn btn-primary" id="btnPrint">🖨️<span class="btn-txt"> Baixar PDF</span></button>
+ </div>
+</header>
+<main class="workspace">
+ <aside class="side-panel">
+  <nav class="tabs"><button class="tab active" data-tab="content">✍️ Conteúdo</button><button class="tab" data-tab="design">🎨 Design</button></nav>
+  <div class="tab-pane active" id="tab-content"><div class="sec open"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">👤</span><span class="t">Dados pessoais</span><span class="arrow">▸</span></div><div class="sec-body"><div class="photo-wrap"><div class="photo-frame"><span>📷</span><img id="photoPreview" class="photo-preview empty" alt="Foto"></div><div><button class="btn btn-sm" id="btnPhoto">Carregar foto</button><input type="file" id="photoInput" accept="image/*" style="display:none"><div class="hint">JPG ou PNG. O formato escolha na aba Design.</div></div></div>
+<label>Nome completo</label><input type="text" id="f_nome" placeholder="Ana Souza">
+<label>Cargo / área desejada</label><input type="text" id="f_cargo" placeholder="Designer de Produto">
+<div class="row2"><div><label>E-mail</label><input type="email" id="f_email" placeholder="ana@email.com"></div><div><label>Telefone</label><input type="tel" id="f_tel" placeholder="(85) 99999-0000"></div></div>
+<div class="row2"><div><label>Cidade / UF</label><input type="text" id="f_cidade" placeholder="Icapuí, CE"></div><div><label>LinkedIn / site</label><input type="text" id="f_link" placeholder="linkedin.com/in/ana"></div></div>
+<label>Resumo profissional</label><textarea id="f_resumo" placeholder="Fale sobre você, seus objetivos e pontos fortes..."></textarea></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">💼</span><span class="t">Experiência profissional</span><span class="badge" data-count="exp">0</span><span class="arrow">▸</span></div><div class="sec-body"><div class="list" id="listExp" data-empty="Nenhuma experiência adicionada"></div><button class="btn btn-add" onclick="addExp()">＋ Adicionar experiência</button></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">🎓</span><span class="t">Formação acadêmica</span><span class="badge" data-count="edu">0</span><span class="arrow">▸</span></div><div class="sec-body"><div class="list" id="listEdu" data-empty="Nenhuma formação adicionada"></div><button class="btn btn-add" onclick="addEdu()">＋ Adicionar formação</button></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">📜</span><span class="t">Cursos e certificações</span><span class="badge" data-count="course">0</span><span class="arrow">▸</span></div><div class="sec-body"><div class="list" id="listCourse" data-empty="Nenhum curso adicionado"></div><button class="btn btn-add" onclick="addCourse()">＋ Adicionar curso</button></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">🛠️</span><span class="t">Habilidades</span><span class="badge" data-count="skills">0</span><span class="arrow">▸</span></div><div class="sec-body"><label>Digite e pressione Enter</label><input type="text" id="skillInput" placeholder="Ex: Excel, Photoshop, Liderança"><div id="listSkills" style="margin-top:10px"></div></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">🚀</span><span class="t">Projetos</span><span class="badge" data-count="project">0</span><span class="arrow">▸</span></div><div class="sec-body"><div class="list" id="listProject" data-empty="Nenhum projeto adicionado"></div><button class="btn btn-add" onclick="addProject()">＋ Adicionar projeto</button></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">🌐</span><span class="t">Idiomas</span><span class="badge" data-count="lang">0</span><span class="arrow">▸</span></div><div class="sec-body"><div class="list" id="listLang" data-empty="Nenhum idioma adicionado"></div><button class="btn btn-add" onclick="addLang()">＋ Adicionar idioma</button></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">🔗</span><span class="t">Links e redes sociais</span><span class="badge" data-count="social">0</span><span class="arrow">▸</span></div><div class="sec-body"><div class="list" id="listSocial" data-empty="Nenhum link adicionado"></div><button class="btn btn-add" onclick="addSocial()">＋ Adicionar link</button></div></div>
+<div class="sec"><div class="sec-head" onclick="toggleSec(this)"><span class="ico">🤝</span><span class="t">Referências</span><span class="badge" data-count="ref">0</span><span class="arrow">▸</span></div><div class="sec-body"><div class="list" id="listRef" data-empty="Nenhuma referência adicionada"></div><button class="btn btn-add" onclick="addRef()">＋ Adicionar referência</button></div></div>
+</div>
+  <div class="tab-pane" id="tab-design"><div class="h">Modelo <span id="tplCount" style="text-transform:none;letter-spacing:0;font-weight:500"></span></div><div class="cats" id="cats"></div><input type="text" id="tplSearch" placeholder="🔍 Buscar modelo..." style="margin-bottom:10px"><div class="grid" id="tplGrid"><button class="tpl" data-tpl="classic" data-cat="Clássicos"><div class="thumb t-classic"><i></i><b></b><b></b><b></b></div><span>Clássico</span></button><button class="tpl" data-tpl="sidebar" data-cat="Modernos"><div class="thumb t-sidebar"><i></i><b></b><b></b><b></b></div><span>Barra lateral</span></button><button class="tpl" data-tpl="minimal" data-cat="Minimalistas"><div class="thumb t-minimal"><i></i><b></b><b></b><b></b></div><span>Minimalista</span></button><button class="tpl" data-tpl="creative" data-cat="Criativos"><div class="thumb t-creative"><i></i><b></b><b></b><b></b></div><span>Criativo</span></button><button class="tpl" data-tpl="lightside" data-cat="Modernos"><div class="thumb t-lightside"><i></i><b></b><b></b><b></b></div><span>Lateral clara</span></button><button class="tpl" data-tpl="executive" data-cat="Clássicos"><div class="thumb t-executive"><i></i><b></b><b></b><b></b></div><span>Executivo</span></button><button class="tpl" data-tpl="timeline" data-cat="Criativos"><div class="thumb t-timeline"><i></i><b></b><b></b><b></b></div><span>Linha do tempo</span></button><button class="tpl" data-tpl="ats" data-cat="Minimalistas"><div class="thumb t-ats"><i></i><b></b><b></b><b></b></div><span>Simples (ATS)</span></button></div>
+<div class="h">Fonte</div><div class="chips"><button class="chip" data-font="'Inter',sans-serif" style="font-family:'Inter',sans-serif">Aa Inter<small>Moderna</small></button><button class="chip" data-font="'Playfair Display',serif" style="font-family:'Playfair Display',serif">Aa Playfair<small>Elegante</small></button><button class="chip" data-font="'Merriweather',serif" style="font-family:'Merriweather',serif">Aa Merriweather<small>Clássica</small></button><button class="chip" data-font="'Space Grotesk',sans-serif" style="font-family:'Space Grotesk',sans-serif">Aa Space Grotesk<small>Ousada</small></button><button class="chip" data-font="'Courier Prime',monospace" style="font-family:'Courier Prime',monospace">Aa Courier<small>Máquina</small></button></div>
+<div class="chips" id="customFonts" style="margin-top:8px"></div>
+<div class="fontload"><button class="btn" id="btnFont">📁 Carregar fonte do computador</button><input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" style="display:none"><div class="row"><input type="text" id="gfName" placeholder="Nome de uma Google Font (ex: Lobster)"><button class="btn" id="btnGf">Adicionar</button></div><div class="hint">Aceita .ttf, .otf, .woff e .woff2. Google Fonts precisa de internet.</div></div>
+<div class="h">Cor de destaque</div><div class="swatches" id="swatches"><input type="color" id="colorPick" title="Cor personalizada"></div>
+<div class="h">Formato da foto</div><div class="seg"><button data-shape="50%">● Redonda</button><button data-shape="14px">▢ Arredondada</button><button data-shape="0px">■ Quadrada</button></div>
+<div hidden><select id="themeSel"><option value="classic"></option><option value="sidebar"></option><option value="minimal"></option><option value="creative"></option></select><select id="fontSel"><option value="'Inter',sans-serif"></option><option value="'Playfair Display',serif"></option><option value="'Merriweather',serif"></option><option value="'Space Grotesk',sans-serif"></option><option value="'Courier Prime',monospace"></option></select><select id="shapeSel"><option value="50%"></option><option value="14px"></option><option value="0px"></option></select></div></div>
+ </aside>
+ <section class="canvas">
+  <div class="canvas-bar"><span>Pré-visualização ao vivo</span><div class="zoom"><span>Zoom</span><input type="range" id="zoom" min="40" max="120" value="100"><span id="zoomTxt">100%</span></div></div>
+  <div class="canvas-scroll" id="canvasScroll"><div class="page theme-classic" id="page"></div></div>
+ </section>
+</main>
+</div>
+<div class="modal" id="txtModal"><div class="modal-box">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><h2 style="margin:0 0 4px;font-size:18px">📥 Importar texto</h2><p class="hint" style="margin:0">Cole seu currículo em texto (ou carregue um arquivo .txt) e tudo é preenchido automaticamente.</p></div><button class="btn btn-sm" id="txtClose">✕</button></div>
+<textarea id="txtArea" placeholder="Cole aqui o texto do seu currículo..."></textarea>
+<div class="hint">Use títulos como <b>Resumo, Experiência, Formação, Cursos, Habilidades, Idiomas, Projetos, Referências</b> e separe cada item com uma linha em branco. Períodos como "Jan 2022 – Atual" viram as datas. Nome e cargo nas duas primeiras linhas; e-mail, telefone e links são reconhecidos sozinhos.</div>
+<div class="modal-actions"><button class="btn btn-sm" id="txtFile">📄 Carregar arquivo .txt</button><input type="file" id="txtFileInput" accept=".txt,.md,text/plain" hidden><button class="btn btn-sm" id="txtSample">Ver exemplo</button><span style="flex:1"></span><button class="btn" id="txtFill">✨ Preencher</button><button class="btn btn-primary" id="txtPdf">📄 Preencher e gerar PDF</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
